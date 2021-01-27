@@ -1,0 +1,23 @@
+FROM ubuntu:focal
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+WORKDIR build
+
+RUN apt update && \
+    apt upgrade -y && \
+    apt autoremove -y && \
+    apt install -y build-essential wget libcurl4-openssl-dev libsqlite3-dev 
+
+RUN wget https://netcologne.dl.sourceforge.net/project/d-apt/files/d-apt.list -O /etc/apt/sources.list.d/d-apt.list && \
+    apt update --allow-insecure-repositories && \
+    apt -y --allow-unauthenticated install --reinstall d-apt-keyring && \
+    apt update && \
+    apt install -y dmd-compiler
+
+COPY Makefile .
+COPY onedrive.service.in .
+COPY src src
+COPY .git .git
+
+ENTRYPOINT ["bash"]

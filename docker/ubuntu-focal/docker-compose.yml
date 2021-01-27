@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+    onedrive-build:
+        image: onedrive-build:${TAG:-focal}
+        build:
+            context: ../../
+            dockerfile: docker/ubuntu-focal/Dockerfile-build
